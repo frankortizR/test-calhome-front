@@ -33,7 +33,6 @@ export default function AdminLogin() {
         let response = ''
         try {
             response = await axiosAdminRoutes.post('/login-admin', credentials)
-            console.log(response)
             console.log(response.data.token)
             accessToken = response.data.token
 
@@ -43,14 +42,21 @@ export default function AdminLogin() {
             // SETTING LOGGED STAET FROM REDUX TOOLKIT
             // authDispatch(setLoggedStateTrue())
 
-            //   ---- REDIRECTING TO PROFILE
-            //        PROVISIONAL SYSTEM TO RELOAD AND MIDDLEWARE TO DETECT COOKIES
-
         } catch (error) {
             console.log(error)
         }
 
     }
+
+    const handleRrefresh = async () =>{
+        try {
+            let response = await axiosAdminRoutes.get('/refresh')
+            console.log(response.data.token)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <Layout>
             <div className='bg-black flex flex-col justify-center items-center'>
@@ -60,6 +66,7 @@ export default function AdminLogin() {
                     <input className='text-black' name='password' type="password" placeholder='password' onChange={handleChange} />
                     <button className='bg-green-500 min-w-[200px] rounded-md'>Login</button>
                 </form>
+                <button onClick={handleRrefresh} className='bg-green-500 min-w-[200px] rounded-md text-white'>Refresh</button>
             </div>
         </Layout>
     )
